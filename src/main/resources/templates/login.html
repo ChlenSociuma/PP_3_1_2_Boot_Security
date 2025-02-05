@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+<h1>Welcome</h1>
+<div class="modal-content">
+    <h2>Login</h2>
+
+    <p th:if="${param.error}" class="error">Wrong login or password</p>
+
+
+    <p th:if="${param.logout}" class="success">logged out</p>
+
+    <form th:action="@{/login}" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required autocomplete="current-username">
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required autocomplete="current-password">
+
+        <button type="submit">Login</button>
+
+        <a href="/register">  Register new user</a>
+    </form>
+</div>
+
+</body>
+</html>
