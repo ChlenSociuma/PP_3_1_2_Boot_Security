@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<head>
+  <title>About user</title>
+  <link rel="stylesheet" th:href="@{/styles.css}">
+</head>
+<body>
+<header>
+  <nav>
+    <form class="menu-form" action="#" th:action="@{/logout}" method="post">
+      <button type="submit">Logout</button>
+    </form>
+  </nav>
+</header>
+<h1>Info about <span th:text="${user.username}"></span></h1>
+
+<div class="table-container">
+  <table id="userTable">
+    <thead>
+    <tr>
+      <th>Id</th>
+      <th>Username</th>
+      <th>First Name</th>
+      <th>Last Name</th>
+      <th>Age</th>
+      <th>Roles</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td th:text="${user.id}"></td>
+      <td th:text="${user.username}"></td>
+      <td th:text="${user.firstName}"></td>
+      <td th:text="${user.lastName}"></td>
+      <td th:text="${user.age}"></td>
+      <td th:text="${#strings.setJoin(user.roles.![name], ', ')}"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<form class="back-form" action="/admin">
+  <button type="submit" class="delete-btn">Back</button>
+</form>
+</body>
+</html>

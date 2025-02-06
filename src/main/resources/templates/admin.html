@@ -32,9 +32,13 @@
             <label for="lastName">Last name:</label>
             <input type="text" id="lastName" th:field="${user.lastName}" />
             <label for="age">Age:</label>
-            <input type="text" id="age" th:field="${user.age}" />
+            <input type="number" id="age" th:field="${user.age}" />
             <label for="password">Password:</label>
             <input type="text" id="password" name="password" />
+            <input type="hidden" name="roles" value="2"/>
+            <label class="ch-label" for="isAdmin2"> Is admin?
+            <input type="checkbox" id="isAdmin2" class="ch-box" name="roles" value="1"/>
+            </label>
             <button type="submit">Save user</button>
         </form>
     </div>
@@ -60,11 +64,14 @@
                 <button class="edit-btn" th:data-user-id="${user.id}">Edit</button>
             </td>
             <td th:text="${user.id}"></td>
-            <td th:text="${user.username}"></td>
+            <td>
+                <span class="username" th:text="${user.username}"></span>
+                <a th:href="@{/admin/user/{id}(id=${user.id})}"> (More)</a>
+            </td>
             <td th:text="${user.firstName}"></td>
             <td th:text="${user.lastName}"></td>
             <td th:text="${user.age}"></td>
-            <td th:text="${user.roles}"></td>
+            <td th:text="${#strings.setJoin(user.roles.![name], ', ')}"></td>
             <td class="actions">
                 <form th:action="@{/admin/delete}" method="post">
                     <input type="hidden" name="userId" th:value="${user.id}" />
@@ -90,10 +97,12 @@
             <input type="text" id="editLastName" name="lastName" />
             <label for="editAge">Age:</label>
             <input type="number" id="editAge" name="age" />
-            <label for="editPassword">Password:</label>
+            <label for="editPassword">New password:</label>
             <input type="text" id="editPassword" name="password" />
-            <label class="ch-label" for="isAdmin">
-                Is admin? <input type="checkbox" class="ch-box" id="isAdmin" name="isAdmin">
+            <input type="hidden" name="roles" value="2"/>
+            <label class="ch-label" for="isAdmin"> Is admin?
+            <input type="checkbox" id="isAdmin" class="ch-box" name="roles" value="1"
+                   th:checked="${user.roles.?[role == 'ROLE_ADMIN']}"/>
             </label>
             <button type="submit">Save Changes</button>
         </form>

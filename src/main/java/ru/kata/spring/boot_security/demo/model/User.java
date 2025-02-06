@@ -1,6 +1,5 @@
 package ru.kata.spring.boot_security.demo.model;
 
-
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,13 +29,13 @@ public class User implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles = new HashSet<>();
+    private Collection<Role> roles = new ArrayList<>();
 
     public User() {}
 
@@ -82,9 +81,9 @@ public class User implements UserDetails {
 
     public void setPassword(String password) { this.password = password; }
 
-    public Set<Role> getRoles() { return roles; }
+    public Collection<Role> getRoles() { return roles; }
 
-    public void setRoles(Set<Role> roles) { this.roles = roles; }
+    public void setRoles(Collection<Role> roles) { this.roles = roles; }
 
     public void addRole(Role role) { this.roles.add(role); }
 
@@ -117,9 +116,7 @@ public class User implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
+    public Collection<? extends GrantedAuthority> getAuthorities() { return List.of(); }
 
     @Override
     public String getPassword() { return password; }

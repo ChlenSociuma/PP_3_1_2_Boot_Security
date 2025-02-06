@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (event.target && event.target.classList.contains("edit-btn")) {
             const userId = event.target.dataset.userId;
             const row = event.target.closest('tr');
-            const username = row.querySelector('td:nth-child(3)').textContent;
+            const username = row.querySelector('.username').textContent.trim();
             const firstName = row.querySelector('td:nth-child(4)').textContent;
             const lastName = row.querySelector('td:nth-child(5)').textContent;
             const age = row.querySelector('td:nth-child(6)').textContent;
@@ -35,7 +35,8 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('editLastName').value = lastName;
             document.getElementById('editAge').value = age;
             document.getElementById('editPassword').value = "";
-            document.getElementById('isAdmin').checked = roles.includes('ROLE_ADMIN');
+            document.getElementById('isAdmin2').checked = false;
+            document.getElementById('isAdmin').checked = roles.includes('Admin');
 
             editModal.style.display = "block";
         }

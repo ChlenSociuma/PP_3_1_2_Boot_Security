@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.dao.RoleRepository;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
@@ -37,10 +37,11 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     private void initializeRoles() {
         if (roleRepository.findByRole("ROLE_ADMIN").isEmpty()) {
-            roleRepository.save(new Role("ROLE_ADMIN"));
+            roleRepository.save(new Role("ROLE_ADMIN", "Admin"));
+
         }
         if (roleRepository.findByRole("ROLE_USER").isEmpty()) {
-            roleRepository.save(new Role("ROLE_USER"));
+            roleRepository.save(new Role("ROLE_USER", "User"));
         }
     }
 

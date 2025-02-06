@@ -22,11 +22,13 @@
                    autocomplete="current-lastName">
 
             <label for="age" class="form-label">Age</label>
-            <input type="number" class="form-control" id="age" th:field="*{age}" autocomplete="current-age">
+            <input type="number" class="form-control" id="age" th:field="*{age}"
+                   autocomplete="current-age">
 
             <label for="password" class="form-label">Password</label>
             <input type="password" class="form-control" id="password" th:field="*{password}" required
                    autocomplete="current-password">
+            <input type="hidden" name="roles" value="2"/>
 
             <button type="submit">Registration</button>
 

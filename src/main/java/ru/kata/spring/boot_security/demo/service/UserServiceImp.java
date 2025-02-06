@@ -4,23 +4,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kata.spring.boot_security.demo.dao.RoleRepository;
-import ru.kata.spring.boot_security.demo.dao.UserDao;
+import ru.kata.spring.boot_security.demo.repository.RoleRepository;
+import ru.kata.spring.boot_security.demo.repository.UserRepository;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class UserServiceImp implements UserService {
 
-    private final UserDao userDao;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final RoleRepository roleRepository;
 
     @Autowired
-    public UserServiceImp(UserDao userDao, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
-        this.userDao = userDao;
+    public UserServiceImp(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleRepository = roleRepository;
     }
@@ -29,59 +30,61 @@ public class UserServiceImp implements UserService {
     @Override
     public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role userRole = roleRepository.findByRole("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Role 'ROLE_USER' not found"));
-        if (!user.getRoles().contains(userRole)) {
-            user.addRole(userRole);
+        userRepository.save(user);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<Role> getListOfRoles(List<String> roles) {
+        List<Role> roleList = new ArrayList<>();
+        for (String role : roles) {
+            roleList.add(roleRepository.findById(Long.parseLong(role))
+                    .orElseThrow(() -> new RuntimeException("Role not found")));
         }
-        userDao.save(user);
+        return roleList;
     }
 
     @Transactional
     @Override
-    public void update(User user, boolean isAdmin) {
-        User existingUser = userDao.findById(user.getId()).orElseThrow();
-
+    public void update(User user) {
+        User existingUser = userRepository.findById(user.getId()).orElseThrow();
         if (user.getPassword() == null || user.getPassword().isEmpty()) {
             user.setPassword(existingUser.getPassword());
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
 
-        Role userRole = roleRepository.findByRole("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("User role not found"));
-        user.addRole(userRole);
-        Role adminRole = roleRepository.findByRole("ROLE_ADMIN")
-                .orElseThrow(() -> new RuntimeException("Admin role not found"));
-        if (isAdmin) {
-            user.addRole(adminRole);
-        } else {
-            user.getRoles().remove(adminRole);
-        }
-        userDao.save(user);
+        userRepository.saveAndFlush(user);
     }
 
     @Transactional
     @Override
     public void delete(Long userId) {
-        User user = userDao.findById(userId)
+        User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         for (Role role : user.getRoles()) {
             role.getUsers().remove(user);
         }
-        userDao.delete(user);
+        userRepository.delete(user);
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public User getUserById(Long id) {
+        return userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Transactional(readOnly = true)
     @Override
     public User findByUsername(String username) {
-        return userDao.findByUsername(username)
+        return userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
     @Transactional(readOnly = true)
     @Override
     public List<User> findAll() {
-        return userDao.findAll();
+        return userRepository.findAll();
     }
 }
