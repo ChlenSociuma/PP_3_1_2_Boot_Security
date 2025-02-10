@@ -1,52 +1,33 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const openModalBtn = document.getElementById("openModal");
-    const modal = document.getElementById("myModal");
-    const closeModalBtn = modal.querySelector(".close");
-    const editModal = document.getElementById("editModal");
-    const closeEditModalBtn = editModal.querySelector(".close2");
+$(document).ready(function() {
+    $('.edit-btn').on('click', function() {
+        var row = $(this).closest('tr');
+        var id = row.find('td:eq(0)').text();
+        var firstName = row.find('td:eq(1)').text();
+        var lastName = row.find('td:eq(2)').text();
+        var age = row.find('td:eq(3)').text();
+        var username = row.find('.username').text();
 
-    openModalBtn.addEventListener("click", () => {
-        document.getElementById('age').value = '';
-        modal.style.display = "block";
+        $('#editUserId').val(id);
+        $('#hiddenEditUserId').val(id);
+        $('#editUsername').val(username);
+        $('#editFirstName').val(firstName);
+        $('#editLastName').val(lastName);
+        $('#editAge').val(age);
     });
 
-    closeModalBtn.addEventListener("click", () => {
-        modal.style.display = "none";
-    });
+    $('.del-button').on('click', function() {
+        var row = $(this).closest('tr');
+        var id = row.find('td:eq(0)').text();
+        var firstName = row.find('td:eq(1)').text();
+        var lastName = row.find('td:eq(2)').text();
+        var age = row.find('td:eq(3)').text();
+        var username = row.find('.username').text();
 
-    closeEditModalBtn.addEventListener("click", () => {
-        editModal.style.display = "none";
-    });
-
-    const userTable = document.getElementById("userTable");
-    userTable.addEventListener("click", (event) => {
-        if (event.target && event.target.classList.contains("edit-btn")) {
-            const userId = event.target.dataset.userId;
-            const row = event.target.closest('tr');
-            const username = row.querySelector('.username').textContent.trim();
-            const firstName = row.querySelector('td:nth-child(4)').textContent;
-            const lastName = row.querySelector('td:nth-child(5)').textContent;
-            const age = row.querySelector('td:nth-child(6)').textContent;
-            const roles = row.querySelector('td:nth-child(7)').textContent;
-
-            document.getElementById('editUserId').value = userId;
-            document.getElementById('editUsername').value = username;
-            document.getElementById('editFirstName').value = firstName;
-            document.getElementById('editLastName').value = lastName;
-            document.getElementById('editAge').value = age;
-            document.getElementById('editPassword').value = "";
-            document.getElementById('isAdmin2').checked = false;
-            document.getElementById('isAdmin').checked = roles.includes('Admin');
-
-            editModal.style.display = "block";
-        }
-    });
-
-    window.addEventListener("click", (event) => {
-        if (event.target === modal) {
-            modal.style.display = "none";
-        } else if (event.target === editModal) {
-            editModal.style.display = "none";
-        }
+        $('#DelUserId').val(id);
+        $('#hiddenDelUserId2').val(id);
+        $('#delUsername').val(username);
+        $('#delFirstName').val(firstName);
+        $('#delLastName').val(lastName);
+        $('#delAge').val(age);
     });
 });

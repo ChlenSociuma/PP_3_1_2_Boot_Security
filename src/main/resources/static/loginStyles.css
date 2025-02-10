@@ -1,0 +1,15 @@
+.card {
+    border: 0;
+    min-width: 300px;
+}
+.form-group {
+    margin-bottom: 0;
+}
+.btn {
+    margin-top: 10px;
+}
+
+.my-4 {
+    margin-top: 50px !important;
+    margin-bottom: 13px !important;;
+}

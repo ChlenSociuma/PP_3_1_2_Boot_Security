@@ -1,32 +1,41 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
-    <link rel="stylesheet" href="/styles.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Login page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="/loginStyles.css">
 </head>
 <body>
-<h1>Welcome</h1>
-<div class="modal-content">
-    <h2>Login</h2>
+<div class="container d-flex align-items-center justify-content-center">
+    <div class="card">
+        <h3 class="my-4 font-weight-bold">Please sign in</h3>
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <input type="email" id="username" name="username" required
+                       class="form-control" placeholder="Email address" autocomplete="username">
+            </div>
 
-    <p th:if="${param.error}" class="error">Wrong login or password</p>
+            <div class="form-group">
+                <input type="password" id="password" name="password" required
+                       class="form-control" placeholder="Password" autocomplete="current-password">
+            </div>
 
+            <button type="submit" class="btn p-2 btn-primary btn-block btn-lg">Sign in</button>
+        </form>
 
-    <p th:if="${param.logout}" class="success">logged out</p>
-
-    <form th:action="@{/login}" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required autocomplete="current-username">
-
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required autocomplete="current-password">
-
-        <button type="submit">Login</button>
-
-        <a href="/register">  Register new user</a>
-    </form>
+    </div>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 </body>
 </html>

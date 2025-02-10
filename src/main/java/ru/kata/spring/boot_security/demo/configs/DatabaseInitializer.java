@@ -14,17 +14,14 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 public class DatabaseInitializer implements CommandLineRunner {
     private final UserDetailsService userDetailsService;
     private final RoleRepository roleRepository;
-    private final PasswordEncoder passwordEncoder;
     private final UserService userService;
 
     public DatabaseInitializer(UserDetailsService userDetailsService,
                                UserService userService,
-                               RoleRepository roleRepository,
-                               PasswordEncoder passwordEncoder
+                               RoleRepository roleRepository
     ) {
         this.userDetailsService = userDetailsService;
         this.roleRepository = roleRepository;
-        this.passwordEncoder = passwordEncoder;
         this.userService = userService;
     }
 
@@ -37,11 +34,11 @@ public class DatabaseInitializer implements CommandLineRunner {
 
     private void initializeRoles() {
         if (roleRepository.findByRole("ROLE_ADMIN").isEmpty()) {
-            roleRepository.save(new Role("ROLE_ADMIN", "Admin"));
+            roleRepository.save(new Role("ROLE_ADMIN", "ADMIN"));
 
         }
         if (roleRepository.findByRole("ROLE_USER").isEmpty()) {
-            roleRepository.save(new Role("ROLE_USER", "User"));
+            roleRepository.save(new Role("ROLE_USER", "USER"));
         }
     }
 
@@ -53,8 +50,11 @@ public class DatabaseInitializer implements CommandLineRunner {
                     .orElseThrow(() -> new RuntimeException("Role 'ROLE_USER' not found"));
 
             User admin = new User();
-            admin.setUsername("admin");
+            admin.setUsername("admin@mail.ru");
+            admin.setFirstName("admin");
+            admin.setLastName("admin");
             admin.setPassword("admin");
+            admin.setAge(35);
             admin.getRoles().add(userRole);
             admin.getRoles().add(adminRole);
             userService.save(admin);
